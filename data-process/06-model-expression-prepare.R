@@ -16,11 +16,11 @@ field_microbe_mult_model_expr <-  respiration ~ fW*kR*CR*Q10R^((temperature)/10)
 field_quality_mult_model_expr <- respiration ~ fW*kR*CR*Q10R^((temperature)/10) +(fW*CA/(kA+CA)*kM*CM*Q10M^((temperature)/10))
 
 
-rev_field_null_model_expr <- respiration ~ rA*CR + fW*kS*CS*Q10M^((temperature)/10)
-rev_field_microbe_model_expr <- respiration ~ rA*CR + (mu*epsilon*CS/(kA+CS)*CM+fW*kM*CM*Q10M^((temperature)/10))
-rev_field_quality_model_expr <- respiration ~ rA*CR + (mu*epsilon*CA/(kA+CA)*CM+fW*kM*CM*Q10M^((temperature)/10))
-rev_field_microbe_mult_model_expr <-  respiration ~ rA*CR + (fW*CS/(kA+CS)*kM*CM*Q10M^((temperature)/10))
-rev_field_quality_mult_model_expr <- respiration ~ rA*CR +(fW*CA/(kA+CA)*kM*CM*Q10M^((temperature)/10))
+rev_field_null_model_expr <- respiration ~ gR*CR + fW*kS*CS*Q10M^((temperature)/10)
+rev_field_microbe_model_expr <- respiration ~ gR*CR + (mu*epsilon*CS/(kA+CS)*CM+fW*kM*CM*Q10M^((temperature)/10))
+rev_field_quality_model_expr <- respiration ~ gR*CR + (mu*epsilon*CA/(kA+CA)*CM+fW*kM*CM*Q10M^((temperature)/10))
+rev_field_microbe_mult_model_expr <-  respiration ~ gR*CR + (fW*CS/(kA+CS)*kM*CM*Q10M^((temperature)/10))
+rev_field_quality_mult_model_expr <- respiration ~ gR*CR +(fW*CA/(kA+CA)*kM*CM*Q10M^((temperature)/10))
 
 
 
@@ -50,6 +50,6 @@ model_expressions <- tibble( model = c("null","microbe","quality","microbe-mult"
 
 # Save these as datasets we can utilize
 
-use_data(model_expressions,overwrite = TRUE)
-use_data(respiration_expressions,overwrite = TRUE)
+usethis::use_data(model_expressions,overwrite = TRUE)
+usethis::use_data(respiration_expressions,overwrite = TRUE)
 

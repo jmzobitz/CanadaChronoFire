@@ -7,7 +7,7 @@
 #'   \item field_data. nested field data for assimilation
 #'   \item model. Type of model used - categorical variable (one of "null", "microbe", "quality", "microbe-mult", "quality-mult")
 #'   \item incubation_params. incubation model parameters for that model
-#'   \item field_params. field model parameters for that model
+#'   \item field_params. field model parameters for that model (assuming incubation data estimated first)
 #'   \item model_estimate.  boolean vector if the parameter is in the model (for any part) - helps for subsequent analysis and visualization
 #'   \item incubation_expressions. The formula needed to compute soil respiration from incubation data
 #'   \item field_expressions  The formula needed to compute soil respiration from field data

@@ -22,4 +22,4 @@ estimate_data <- combined_data %>%
 
 
 # Save and use this data for the package
-use_data(estimate_data,overwrite=TRUE)
+usethis::use_data(estimate_data,overwrite=TRUE)
