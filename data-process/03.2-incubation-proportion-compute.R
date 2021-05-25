@@ -4,14 +4,14 @@ library(tidyverse)
 library(CanadaFire)
 
 # Load up the incubation data
-load('data-process/incubation-soil-data.Rda')
+load('data-process/data-outputs/incubation-soil-data.Rda')
 
 
 # Determine the proportion of soil carbon to a given depth.
 proportion_data <- soil_carbon_data %>%
   unite("Area_Plot",Area,Plot,sep="_") %>%
-  mutate(Year = factor(Year,levels=c('N2012','N1990','N1969','NC'),
-                       labels=c("2012","1990","1969","Control"))) %>%
+  mutate(Year = factor(Year,levels=c('N2012','N1990','N1968','NC'),
+                       labels=c("2012","1990","1968","Control"))) %>%
   group_by(Year,Area_Plot) %>%
   mutate(tot = n()) %>%
   filter(tot >3) %>%  # Filter where we only have measurements at all depths
@@ -54,7 +54,7 @@ soil_proportions <- proportion_values %>%
 save(soil_proportions,
      proportion_data,
      proportion_data_fit,
-     file='data-process/incubation-soil-proportion-year.Rda')
+     file='data-process/data-outputs/incubation-soil-proportion-year.Rda')
 
 
 

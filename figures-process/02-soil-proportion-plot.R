@@ -1,7 +1,7 @@
 # This code produces Figure 2: cumulative proportion plot
 
 library(tidyverse)
-load('data-process/incubation-soil-proportion-year.Rda')
+load('data-process/data-outputs/incubation-soil-proportion-year.Rda')
 
 # Compute the ensemble values from the fitted results
 ensemble_proportion <- proportion_data_fit %>%

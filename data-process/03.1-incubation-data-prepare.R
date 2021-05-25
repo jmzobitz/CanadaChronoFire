@@ -1,6 +1,7 @@
 # Prepare the incubation data for modeling activities
 library(tidyverse)
 
+### NOTE: In examining the historical fire maps we found that the 1969 fire * actually * occurred in 1968 (previous studies had this coded as 1969).  This is code that recodes these values
 
 ### STEP 1: read in the incubation data and convert units
 
@@ -14,7 +15,7 @@ soil_carbon_data <- readxl::read_xlsx('data-raw/Canada C kg m2.xlsx') %>%
          soilC = soilC*1000) %>%  # Convert to gC m2
   mutate(Year = if_else(Year == "3","N2012",Year),
          Year = if_else(Year == "25","N1990",Year),
-         Year = if_else(Year == "46","N1969",Year),
+         Year = if_else(Year == "46","N1968",Year),  # Adjust year, see note above
          Year = if_else(Year == "100","NC",Year))
 
 
@@ -26,6 +27,8 @@ soil_carbon_summary <- soil_carbon_data %>% group_by(Year,depth) %>%
   group_by(Year,q_name) %>%
   mutate(q_prop = (q_value)/sum(q_value)) %>%
   ungroup()
+
+
 
 
 ### STEP 1b: the incubation data
@@ -40,7 +43,7 @@ incubation_data <- readxl::read_xlsx('data-raw/Canada data 2015.xlsx',sheet = 'c
          Plot = plot) %>%
   mutate(Year = if_else(Year == "N12","N2012",Year),
          Year = if_else(Year == "N90","N1990",Year),
-         Year = if_else(Year == "N69","N1969",Year)) %>%
+         Year = if_else(Year == "N69","N1968",Year)) %>% # Adjust year, see note above
   mutate(respiration_per_soil_new = respiration_per_soil*1E-6 * (12 / 44) * 24) ### Change efflux from ug C02 g-1 h-1 to g C g-1 day-1
 
 ### STEP 1c: the microbe data
@@ -59,10 +62,12 @@ microbe_incubation_data <- readxl::read_xlsx('data-raw/MicrobeData_Canada.xlsx')
          fW = "AvMoi (%)") %>%
   mutate(Year = if_else(Year == "N12","N2012",Year),
          Year = if_else(Year == "N90","N1990",Year),
-         Year = if_else(Year == "N69","N1969",Year),
+         Year = if_else(Year == "N69","N1968",Year),
          fW = fW/100,
          Plot = as.double(Plot)) %>%
   na.omit()
+
+
 
 
 
@@ -77,10 +82,12 @@ joined_incubation <- incubation_data %>%
          CA = CA_per_soil*soilC/1000)  # available C from mg g to is now g C m-2 day-1
 
 
+
+
 # Save data files for later use
 save(soil_carbon_data,
      soil_carbon_summary,
      incubation_data,
      joined_incubation,
-     file="data-process/incubation-soil-data.Rda")
+     file="data-process/data-outputs/incubation-soil-data.Rda")
 
