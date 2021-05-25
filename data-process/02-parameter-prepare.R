@@ -40,4 +40,6 @@ combined_params <- incubation_params %>%
 # The vector combined_params is a nested list - first column is the model,
 # second column is the incubation model parameters, third column field model parameters, and fourth column a boolean vector if the parameter is in the model (for any part)
 
-save(combined_params,file = 'data-process/data-outputs/parameter-inputs.Rda')
+# Export as a dataset to be used by the package
+use_data(combined_params,overwrite=TRUE)
+
