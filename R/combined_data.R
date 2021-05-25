@@ -1,0 +1,18 @@
+#' Combined merged and nested dataset of incubation and field data for data assimilation. This helps to have a common dataset used across all methods.
+#'
+#' \itemize{
+#'   \item Year. Categorical variable explaining the site (one of "N2012", "N1990", "NC", "N1968", "NALL")
+#'   \item depth. Categorical variable explaining the depth of measurement (5 cm, 10 cm, or ALL (both depths combined))
+#'   \item incubation. nested incubation data for assimilation
+#'   \item field. nested field data for assimilation
+#' }
+#'
+#'
+#' @docType data
+#' @keywords datasets
+#' @name combined_data
+#' @usage data(combined_data)
+#' @format A data frame with 15 rows, 4 columns.
+#' @source Expressions processed and exported in data-process/05-model-data-prepare.R
+
+NULL
