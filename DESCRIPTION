@@ -1,9 +1,9 @@
 Package: CanadaFire
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
+Title: Compute Soil Respiration Fluxes from a Canadian Fire Chronosequence
+Version: 1.0.0
 Author: John Zobitz
-Maintainer: John Zobitz <yzobitz@augsburg.edu>
+Maintainer: John Zobitz <zobitz@augsburg.edu>
 Description: This package contains all code and scripts to produce figures and results for the manuscript "Parameterization and intercomparison of models for heterotrophic and autotrophic soil respiration across a Canadian fire chronosequence"
 License: MIT + file LICENSE
 Encoding: UTF-8

@@ -14,5 +14,5 @@ compute_model_respiration(input_data, input_params, input_model_exp)
 \item{input_paramms}{Parameter values used in expression}
 }
 \description{
-
+\code{compute_model_respiration} Determines modeled soil respiration given data, parameters, and an expression
 }

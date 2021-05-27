@@ -12,7 +12,7 @@ library(CanadaFire)  # Load up the package
 estimate_data_rev <- estimate_data %>%
   mutate(model_estimate = map(.x=model_estimate,
                               .f=~(.x %>% mutate(estimate = if_else(name %in% c("kR","Q10R"),FALSE,estimate),
-                                                 estimate = if_else(name =="gM",TRUE,estimate)                                                       ))),  # Change if we estimate them or not
+                                                 estimate = if_else(name =="gR",TRUE,estimate)                                                       ))),  # Change if we estimate them or not
          field_params = map2(.x=field_params,.y=model_estimate,.f=~(mutate(.x,estimate=.y$estimate))) # Rename the field params so we can estimate them
   )
 
@@ -29,8 +29,8 @@ out_list <- vector("list",length=n_iter)
 for(i in seq_along(out_list)) {
 
   print(i)
-  out_list[[i]] <- combined_params_rev %>%
-    mutate(parameter_results = pmap(list(field_params,field_data,rev_field_expressions),.f=~parameter_estimate(..1,..2,..3)))
+  out_list[[i]] <- estimate_data_rev %>%
+    mutate(parameter_results = pmap(list(field_params,field_data,field_linear_expressions),.f=~parameter_estimate(..1,..2,..3)))
 
 }
 
@@ -43,7 +43,7 @@ estimate_combined <- out_list %>%
   ungroup()
 
 # Hoist up the parameters
-field_linear_results <- estimate_combined %>%
+field_linear_approach_results <- estimate_combined %>%
   mutate(params = map(.x=parameter_results,.f=~enframe(.x$coefficients))) %>%
   mutate(params = map2(.x=params,.y=field_params,.f=~(filter(.y,estimate) %>%
                                                  select(name) %>%
@@ -53,5 +53,5 @@ field_linear_results <- estimate_combined %>%
   rename(rss = ssquares) %>%
   select(Year,depth,model,params,rss,iteration)
 
-save(field_linear_results,
-     file='estimate-results/field-linear-results.Rda')
+save(field_linear_approach_results,
+     file='estimate-results/field-linear-approach-results.Rda')

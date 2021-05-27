@@ -1,6 +1,6 @@
 #' Compute modeled soil respiration from parameters and data
 #'
-#' \code{compute_model_respiration Determines modeled soil respiration given data, parameters, and an expression
+#' \code{compute_model_respiration} Determines modeled soil respiration given data, parameters, and an expression
 #'
 #' @param input_data Data used to compute respiration
 #' @param input_paramms Parameter values used in expression

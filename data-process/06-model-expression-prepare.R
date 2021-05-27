@@ -3,25 +3,34 @@ library(tidyverse)
 
 # We need a list of model expressions:
 # Define the model expressions globally because they are used.
+
+# Incubation model
 null_model_expr <- respiration ~ kS*CS*Q10M^((temperature)/10)
 microbe_model_expr <- respiration ~ mu*epsilon*CS/(kA+CS)*CM+kM*CM*Q10M^((temperature)/10)
 quality_model_expr <- respiration ~ mu*epsilon*CA/(kA+CA)*CM+kM*CM*Q10M^((temperature)/10)
 microbe_mult_model_expr <-  respiration ~ CS/(kA+CS)*kM*CM*Q10M^((temperature)/10)
 quality_mult_model_expr <- respiration ~ CA/(kA+CA)*kM*CM*Q10M^((temperature)/10)
 
+# Field Model
 field_null_model_expr <- respiration ~ fW*kR*CR*Q10R^((temperature)/10) + fW*kS*CS*Q10M^((temperature)/10)
 field_microbe_model_expr <- respiration ~ fW*kR*CR*Q10R^((temperature)/10) + (mu*epsilon*CS/(kA+CS)*CM+fW*kM*CM*Q10M^((temperature)/10))
 field_quality_model_expr <- respiration ~ fW*kR*CR*Q10R^((temperature)/10) + (mu*epsilon*CA/(kA+CA)*CM+fW*kM*CM*Q10M^((temperature)/10))
 field_microbe_mult_model_expr <-  respiration ~ fW*kR*CR*Q10R^((temperature)/10) + (fW*CS/(kA+CS)*kM*CM*Q10M^((temperature)/10))
 field_quality_mult_model_expr <- respiration ~ fW*kR*CR*Q10R^((temperature)/10) +(fW*CA/(kA+CA)*kM*CM*Q10M^((temperature)/10))
 
+# Field Linear
+field_linear_null_model_expr <- respiration ~ gR*CR + fW*kS*CS*Q10M^((temperature)/10)
+field_linear_microbe_model_expr <- respiration ~ gR*CR + (mu*epsilon*CS/(kA+CS)*CM+fW*kM*CM*Q10M^((temperature)/10))
+field_linear_quality_model_expr <- respiration ~ gR*CR + (mu*epsilon*CA/(kA+CA)*CM+fW*kM*CM*Q10M^((temperature)/10))
+field_linear_microbe_mult_model_expr <-  respiration ~ gR*CR + (fW*CS/(kA+CS)*kM*CM*Q10M^((temperature)/10))
+field_linear_quality_mult_model_expr <- respiration ~ gR*CR +(fW*CA/(kA+CA)*kM*CM*Q10M^((temperature)/10))
 
-rev_field_null_model_expr <- respiration ~ gR*CR + fW*kS*CS*Q10M^((temperature)/10)
-rev_field_microbe_model_expr <- respiration ~ gR*CR + (mu*epsilon*CS/(kA+CS)*CM+fW*kM*CM*Q10M^((temperature)/10))
-rev_field_quality_model_expr <- respiration ~ gR*CR + (mu*epsilon*CA/(kA+CA)*CM+fW*kM*CM*Q10M^((temperature)/10))
-rev_field_microbe_mult_model_expr <-  respiration ~ gR*CR + (fW*CS/(kA+CS)*kM*CM*Q10M^((temperature)/10))
-rev_field_quality_mult_model_expr <- respiration ~ gR*CR +(fW*CA/(kA+CA)*kM*CM*Q10M^((temperature)/10))
-
+# Incubation Field Linear
+incubation_field_linear_null_model_expr <- respiration ~ gR*CR + f*fW*kS*CS*Q10M^((temperature)/10)
+incubation_field_linear_microbe_model_expr <- respiration ~ gR*CR + f*(mu*epsilon*CS/(kA+CS)*CM+fW*kM*CM*Q10M^((temperature)/10))
+incubation_field_linear_quality_model_expr <- respiration ~ gR*CR + f*(mu*epsilon*CA/(kA+CA)*CM+fW*kM*CM*Q10M^((temperature)/10))
+incubation_field_linear_microbe_mult_model_expr <-  respiration ~ gR*CR + f*(fW*CS/(kA+CS)*kM*CM*Q10M^((temperature)/10))
+incubation_field_linear_quality_mult_model_expr <- respiration ~ gR*CR +f*(fW*CA/(kA+CA)*kM*CM*Q10M^((temperature)/10))
 
 
 ra_field_null_model_expr <- RA ~ fW*kR*CR*Q10R^((temperature)/10)
@@ -46,7 +55,8 @@ respiration_expressions <- tibble( model = c("null","microbe","quality","microbe
 model_expressions <- tibble( model = c("null","microbe","quality","microbe-mult","quality-mult"),
                              incubation_expressions = c(null_model_expr,microbe_model_expr,quality_model_expr,microbe_mult_model_expr,quality_mult_model_expr),
                              field_expressions = c(field_null_model_expr, field_microbe_model_expr, field_quality_model_expr, field_microbe_mult_model_expr, field_quality_mult_model_expr),
-                             rev_field_expressions = c(rev_field_null_model_expr, rev_field_microbe_model_expr, rev_field_quality_model_expr, rev_field_microbe_mult_model_expr, rev_field_quality_mult_model_expr))
+                             field_linear_expressions = c(field_linear_null_model_expr, field_linear_microbe_model_expr, field_linear_quality_model_expr, field_linear_microbe_mult_model_expr, field_linear_quality_mult_model_expr),
+                             incubation_field_linear_expressions = c(incubation_field_linear_null_model_expr, incubation_field_linear_microbe_model_expr, incubation_field_linear_quality_model_expr, incubation_field_linear_microbe_mult_model_expr, incubation_field_linear_quality_mult_model_expr))
 
 # Save these as datasets we can utilize
 

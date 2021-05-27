@@ -1,4 +1,7 @@
 # This script creates Figure 3: Taylor diagram of incubation only results
+
+library(tidyverse)
+library(CanadaFire)
 load('estimate-results/stats-results/taylor-incubation.Rda')
 
 taylor_values <- model_fits %>%

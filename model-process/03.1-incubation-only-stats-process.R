@@ -5,59 +5,49 @@ library(CanadaFire)
 library(tidyverse)
 
 # Load up the estimated results parameters
-load('estimate-results/incubation-only-results.Rda')
+load('estimate-results/incubation-linear-approach-data.Rda')
 
-# Now we need to determine the summary distribution, first filtering out by the RSS any duplicates and between the 25th - 75 percentile
-
-parameter_summary <- rss_filter(incubation_results) %>%
-  select(Year,depth,model,rss_filter) %>%
-  mutate(summary_param = map(.x=rss_filter, .f=~(.x$params %>%
-                                                   bind_rows() %>%
-                                                   group_by(name) %>%
-                                                   nest() %>%
-                                                   mutate(fivenum = map(.x=data,.f=~(summary(.x$value) %>% enframe()) )   ) %>%
-                                                   mutate(conf_int =  map(.x=data,.f=~(tibble(ci_value=quantile(.x$value, c(0.025, 0.5, 0.975)), quantile = c("q0.025", "q0.5", "q0.975")))  ) )))) %>% select(Year,depth,model,summary_param) %>%
-  unnest(cols=summary_param) %>%
-  select(-data) %>% group_by(Year,depth,model) %>%
-  nest()
-
-
-# Compute the median parameter values
-median_params <- parameter_summary %>%
-  unnest(col=c(data)) %>%
-  unnest(col=conf_int) %>%
-  filter(quantile=="q0.5") %>%
-  select(Year,depth,model,name,ci_value) %>%
+my_results <- estimate_data_linear %>%
   group_by(Year,depth,model) %>%
   nest()
 
-# Load up the expressions to compute respiration:
+my_expressions <- model_expressions %>%
+  select(model,incubation_expressions) %>%
+  rename(expressions = incubation_expressions)
 
-model_fn_inputs <-median_params %>%
-  inner_join(model_expressions,by=c("model")) %>%
-  inner_join(combined_data,by=c("Year","depth")) %>%
-  rename(params = data)
-
-# Compute the summary values and then we are ready to compute the taylor diagrams!
-model_values_incubation <- model_fn_inputs %>%
-  mutate(incubation_outputs = pmap(.l=list(incubation,params,incubation_expressions),.f=~compute_model_respiration(..1,..2,..3)) ) %>%
-  mutate(n_params = map(.x=params,.f=~(.x %>%  summarize(value = n()) %>% pull(value)))) %>%
-  select(Year,depth,model,incubation_outputs,n_params)
+my_data <- combined_data %>% select(-field) %>%
+  rename(data = incubation)
 
 
-# This is a long nested list that computes model stats and linear coeff, w/ AIC!
-model_fits <- model_values_incubation %>%
-  mutate(lm_fit = map(.x=incubation_outputs,.f=~lm(rModel~rSoil,data=.x))) %>%
+incubation_median_model <- summarize_median_soil_respiration(my_results,my_expressions,my_data,"incubation")
+
+
+
+# A quick function that computes the AIC
+compute_aic <- function(in_data,n_params) {
+  n_obs <- dim(in_data)[1]
+  model <- in_data$rModel
+  observations <- in_data$rSoil
+  ll <- -n_obs*(log(2*pi)+1+log((sum((model-observations)^2)/n_obs)))/2
+  AIC <- -2*ll + 2*n_params
+
+}
+
+
+
+
+### Make these into a plot
+model_fits <- incubation_median_model %>%
+  mutate(lm_fit = map(.x=outputs,.f=~lm(rModel~rSoil,data=.x))) %>%
   mutate(stats = map(.x=lm_fit,.f=~broom::glance(.x))) %>%
   mutate(coeffs = map(.x=lm_fit,.f=~broom::tidy(.x))) %>%
   select(-lm_fit) %>%
-  mutate(taylor_values = map(.x=incubation_outputs,.f=~taylor_compute(.x$rSoil,.x$rModel))) %>%
-  mutate(aic = map2(.x=stats,.y=n_params,.f=~(unlist(-2*.x$logLik+2*.y))))
+  mutate(taylor_values = map(.x=outputs,.f=~taylor_compute(.x$rSoil,.x$rModel))) %>%
+  mutate(aic = map2(.x=outputs,.y=n_params,.f=~compute_aic(.x,.y)))
 
 
 # OK, let's save these results - we will use them later!
 save(model_fits,file='estimate-results/stats-results/taylor-incubation.Rda')
 
-save(median_params,parameter_summary,file='estimate-results/stats-results/summary-parameter-incubation.Rda')
 
 
