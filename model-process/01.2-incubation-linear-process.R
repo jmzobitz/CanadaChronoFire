@@ -23,14 +23,33 @@ parameter_unite <- function(new_params,old_params) {
   return(new_values)
 }
 
+# Compute the heterotrophic respiration values for the field data, adding rH as a column to the field data
+
+# This function does that for us
+compute_model_rh <- function(input_data,input_params,input_model_exp) {
+
+  my_params <- input_params %>% select(name,value) %>% deframe()
+
+  with(as.list(c(my_params)), {
+
+    respiration <- input_data$respiration
+    rSoil_model <- eval(formula.tools::rhs(input_model_exp),envir=input_data) %>% as.vector()
+
+    return(mutate(input_data,rH=rSoil_model))
+
+  })
 
 
-# Copy over the parameters from the incubation to the field data
+}
+
+# Now we map!  Add rH as a column to the data, and then also copy over incubation parameters to the field data
 estimate_data_linear <- rss_unique %>%
+  mutate(field_data = pmap(list(field_data,incubation_params,incubation_expressions),.f=~compute_model_rh(..1,..2,..3))) %>%
   mutate(field_params = map2(.x=params,.y=field_params,.f=~parameter_unite(.x,.y)) ) %>%
-  select(Year,depth,model,iteration,params,field_data,incubation_params,field_params,model_estimate,field_expressions,incubation_field_linear_expressions) %>%
   ungroup() %>%
   mutate(curr_iter = 1:n())
+
+
 
 # Save this result - we will use it for computing taylor values
 save(estimate_data_linear,

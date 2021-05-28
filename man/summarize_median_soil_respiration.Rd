@@ -12,7 +12,7 @@ summarize_median_soil_respiration(
 )
 }
 \arguments{
-\item{input_results}{a vector of parameter estimates}
+\item{input_results}{a nested (by Year, model, depth) vector of parameter estimates}
 
 \item{input_expressions}{expressions we use to compute the model}
 

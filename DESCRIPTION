@@ -1,4 +1,4 @@
-Package: CanadaFire
+Package: CanadaChronoFire
 Type: Package
 Title: Compute Soil Respiration Fluxes from a Canadian Fire Chronosequence
 Version: 1.0.0

@@ -22,7 +22,11 @@ for(i in seq_along(out_list)) {
 
   curr_results <- parameter_estimate(estimate_data_rev$field_params[[i]],estimate_data_rev$field_data[[i]],estimate_data_rev$incubation_field_linear_expressions[[i]])
 
-  coefficients <- curr_results$coefficients %>% enframe()
+  coefficients <- curr_results$coefficients %>% enframe() %>%
+    inner_join(estimate_data_rev$model_estimate[[i]],by="name") %>%
+    filter(estimate) %>%
+    select(-estimate)
+
   rss <- curr_results$ssquares
   out_list[[i]] <- list(currIter = i,
                         params=coefficients,
@@ -39,16 +43,15 @@ estimate_results <- tibble(results = out_list) %>%
   hoist(results,
         curr_iter = "currIter",
         params_new= "params",
-        rss = "rss")
+        rss_new = "rss")
 
 
 # Now we just want to join these up together.  # FILTER OUT IF IT IS IN THE MODEL
 
 incubation_field_linear_approach_results <- estimate_data_rev %>%
   inner_join(estimate_results,by="curr_iter")  %>%
-  select(Year,depth,model,params_new,rss,iteration,model_estimate) %>%
-  rename(params=params_new) %>%
-  mutate(params = map2(.x=params,.y=model_estimate,.f=~(.x %>% inner_join(.y,by="name") %>% filter(estimate) %>% select(-estimate)))) %>%
+  select(Year,depth,model,params_new,rss_new,iteration,model_estimate) %>%
+  rename(params=params_new,rss=rss_new) %>%
   select(-model_estimate)
 
 

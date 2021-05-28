@@ -12,12 +12,18 @@ load('estimate-results/incubation-linear-approach-data.Rda')
 out_list <- vector("list",length=dim(estimate_data_linear)[1])
 
 
-for(i in seq_along(out_list)) {
+
+#for(i in seq_along(out_list)) {
+for(i in 6040:20175) {
   print(i)
 
-  curr_results <- parameter_estimate(estimate_data_linear$field_params[[i]],estimate_data_linear$field_data[[i]],estimate_data_linear$field_expressions[[i]])
+  curr_results <- parameter_estimate(estimate_data_linear$field_params[[i]],estimate_data_linear$field_data[[i]],estimate_data_linear$incubation_field_expressions[[i]])
 
-  coefficients <- curr_results$coefficients %>% enframe()
+  coefficients <- curr_results$coefficients %>% enframe() %>%
+    inner_join(estimate_data_linear$model_estimate[[i]],by="name") %>%
+    filter(estimate) %>%
+    select(-estimate)
+
   rss <- curr_results$ssquares
   out_list[[i]] <- list(currIter = i,
                         params=coefficients,
@@ -33,16 +39,15 @@ estimate_results <- tibble(results = out_list) %>%
   hoist(results,
         curr_iter = "currIter",
         params_new = "params",
-        rss = "rss")
+        rss_new = "rss")
 
 
 # Now we just want to join these up together.  # FILTER OUT IF IT IS IN THE MODEL
 
 incubation_field_approach_results <- estimate_data_linear %>%
   inner_join(estimate_results,by="curr_iter")  %>%
-  select(Year,depth,model,params_new,rss,iteration,model_estimate) %>%
-  rename(params=params_new) %>%
-  mutate(params = map2(.x=params,.y=model_estimate,.f=~(.x %>% inner_join(.y,by="name") %>% filter(estimate) %>% select(-estimate)))) %>%
+  select(Year,depth,model,params_new,rss_new,iteration,model_estimate) %>%
+  rename(params=params_new,rss=rss_new) %>%
   select(-model_estimate)
 
 

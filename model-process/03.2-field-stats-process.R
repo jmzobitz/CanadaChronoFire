@@ -3,106 +3,55 @@
 library(tidyverse)
 library(CanadaFire)
 
-# load up the data
 
 
 
-# Load and process the parameters
-### Approach 1: Field
-load('estimate-results/field-approach-results.Rda')
+# Load up median parameters
+load('estimate-results/stats-results/median-params-field.Rda')
 
-my_results <- rss_filter(field_approach_results) %>%
-  select(Year,depth,model,rss_filter) %>%
-  rename(data = rss_filter )
-
-my_expressions <- model_expressions %>%
-  select(model,field_expressions) %>%
-  rename(expressions = field_expressions)
-
-my_data <- combined_data %>% select(-incubation) %>%
-  rename(data = field)
-
-field_median_model <- summarize_median_soil_respiration(my_results,my_expressions,my_data,"field")
-
-
-### Approach 2: Field - Linear
-load('estimate-results/field-linear-approach-results.Rda')
-
-my_results <- rss_filter(field_linear_approach_results) %>%
-  select(Year,depth,model,rss_filter) %>%
-  rename(data = rss_filter )
-
-my_expressions <- model_expressions %>%
-  select(model,field_linear_expressions) %>%
-  rename(expressions = field_linear_expressions)
+my_params <- median_params_field %>%
+  rename(params=data)
 
 my_data <- combined_data %>% select(-incubation) %>%
   rename(data = field)
 
 
-field_linear_median_model <- summarize_median_soil_respiration(my_results,my_expressions,my_data,"field-linear")
-
-### Approach 3: Incubation Field
-# We don't need to do any filtering on the approach - just unnest and compute statistics
-
-load('estimate-results/incubation-field-approach-results.Rda')
-
-my_results <- incubation_field_approach_results %>%
-  group_by(Year,depth,model) %>%
-  nest()
-
-my_expressions <- model_expressions %>%
-  select(model,field_expressions) %>%
-  rename(expressions = field_expressions)
-
-my_data <- combined_data %>% select(-incubation) %>%
-  rename(data = field)
-
-
-incubation_field_median_model <- summarize_median_soil_respiration(my_results,my_expressions,my_data,"incubation-field")
-
-
-### Approach 4: Incubation Field Linear
-# We don't need to do any filtering on the approach - just unnest and compute statistics
-
-load('estimate-results/incubation-field-linear-approach-results.Rda')
-
-my_results <- incubation_field_linear_approach_results %>%
-  group_by(Year,depth,model) %>%
-  nest()
-
-my_expressions <- model_expressions %>%
-  select(model,incubation_field_linear_expressions) %>%
-  rename(expressions = incubation_field_linear_expressions)
-
-my_data <- combined_data %>% select(-incubation) %>%
-  rename(data = field)
-
-incubation_field_linear_median_model <- summarize_median_soil_respiration(my_results,my_expressions,my_data,"incubation-field-linear")
-
-#### OK, now we can compute things
-out_results <- rbind(field_median_model,field_linear_median_model,incubation_field_median_model,incubation_field_linear_median_model)
-
-# A quick function that computes the AIC
-compute_aic <- function(in_data,n_params) {
-  n_obs <- dim(in_data)[1]
-  model <- in_data$rModel
-  observations <- in_data$rSoil
-  ll <- -n_obs*(log(2*pi)+1+log((sum((model-observations)^2)/n_obs)))/2
-  AIC <- -2*ll + 2*n_params
-
-}
+# We need to do some cleanup on the respiration expressions
+my_expressions <- respiration_expressions %>%
+  select(model,rSoil_expression,rSoil_incubation_field_linear_expression,rSoil_field_linear_expression) %>%
+  mutate(incubation_field = rSoil_expression) %>%
+  rename(field = rSoil_expression,
+         field_linear = rSoil_field_linear_expression,
+         incubation_field_linear = rSoil_incubation_field_linear_expression) %>%
+  pivot_longer(cols=c(-"model"),names_to="approach",values_to="expressions") %>%
+  mutate(approach = str_replace_all(approach,"_","-"))  # Replace string names
 
 
 
-# This is a long nested list that computes model stats and linear coeff, w/ AIC!
-model_fits <- out_results %>%
+# Join these all together
+my_inputs <- my_params %>%
+  inner_join(my_data,by=c("Year","depth")) %>%
+  inner_join(my_expressions,by=c("model","approach"))
+
+
+# Now we can go and compute these!
+
+field_median_model <- my_inputs %>%
+  mutate(outputs=pmap(list(data,params,expressions),.f=~compute_model_respiration(..1,..2,..3)),
+         n_params = map(.x=params,.f=~(.x %>%  summarize(value = n()) %>% pull(value)))) %>%
+  select(Year,depth,model,approach,n_params,outputs)
+
+
+
+### Make these into a plot
+model_fits <- field_median_model %>%
   mutate(lm_fit = map(.x=outputs,.f=~lm(rModel~rSoil,data=.x))) %>%
   mutate(stats = map(.x=lm_fit,.f=~broom::glance(.x))) %>%
   mutate(coeffs = map(.x=lm_fit,.f=~broom::tidy(.x))) %>%
   select(-lm_fit) %>%
   mutate(taylor_values = map(.x=outputs,.f=~taylor_compute(.x$rSoil,.x$rModel))) %>%
-  mutate(aic = map2(.x=outputs,.y=n_params,.f=~compute_aic(.x,.y)))
+  mutate(aic = map2(.x=outputs,.y=n_params,.f=~compute_aic(.x$rSoil,.x$rModel,.y)))
+
 
 
 

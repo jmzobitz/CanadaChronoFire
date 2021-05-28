@@ -2,7 +2,7 @@
 #'
 #' \code{summarize_median_soil_respiration} summarizes the soil respiration from the median parameters
 #'
-#' @param input_results a vector of parameter estimates
+#' @param input_results a nested (by Year, model, depth) vector of parameter estimates
 #' @param input_expressions expressions we use to compute the model
 #' @param input_expression data used to compute respiration
 #' @param approach_name name of the approach for labeling
