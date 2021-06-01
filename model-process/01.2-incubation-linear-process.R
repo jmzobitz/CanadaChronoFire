@@ -44,7 +44,7 @@ compute_model_rh <- function(input_data,input_params,input_model_exp) {
 
 # Now we map!  Add rH as a column to the data, and then also copy over incubation parameters to the field data
 estimate_data_linear <- rss_unique %>%
-  mutate(field_data = pmap(list(field_data,incubation_params,incubation_expressions),.f=~compute_model_rh(..1,..2,..3))) %>%
+  mutate(field_data = pmap(list(field_data,params,incubation_expressions),.f=~compute_model_rh(..1,..2,..3))) %>%
   mutate(field_params = map2(.x=params,.y=field_params,.f=~parameter_unite(.x,.y)) ) %>%
   ungroup() %>%
   mutate(curr_iter = 1:n())

@@ -19,7 +19,7 @@ summarize_flux_component_approach <- function (in_results,in_resp_expr,approach_
 
   flux_components <- my_inputs %>%
     mutate(fluxes = pmap(list(field,params,RA_expression,RH_expression),
-                         .f=~compute_model_flux_components(..1,..2,..3,..4))
+                         .f=~compute_model_respiration_components(..1,..2,..3,..4))
     ) %>%
     select(Year,depth,model,fluxes)
 

@@ -4,7 +4,7 @@
 # Prepare the model expressions
 library(nlsr)
 library(tidyverse)
-library(CanadaFire)  # Load up the package
+library(CanadaChronoFire)  # Load up the package
 
 ####
 
@@ -46,8 +46,8 @@ estimate_combined <- out_list %>%
 field_linear_approach_results <- estimate_combined %>%
   mutate(params = map(.x=parameter_results,.f=~enframe(.x$coefficients))) %>%
   mutate(params = map2(.x=params,.y=field_params,.f=~(filter(.y,estimate) %>%
-                                                 select(name) %>%
-                                                 inner_join(.x,by="name")
+                                                        select(name) %>%
+                                                        inner_join(.x,by="name")
   ))) %>%
   hoist(parameter_results,"ssquares") %>%
   rename(rss = ssquares) %>%

@@ -1,6 +1,7 @@
 # This code produces Figure 2: cumulative proportion plot
 
 library(tidyverse)
+library(CanadaChronoFire)
 load('data-process/data-outputs/incubation-soil-proportion-year.Rda')
 
 # Compute the ensemble values from the fitted results
@@ -22,10 +23,10 @@ p1 <- proportion_data_fit %>%
   geom_line(data=ensemble_proportion,aes(x=depth,y=q0.5),inherit.aes = FALSE,color='blue',size=1) +
   facet_grid(.~Year) +
   scale_x_reverse() +
-  coord_flip() + theme_fulbright() +
+  coord_flip() + theme_canada() +
   theme(axis.text.x=element_text(angle =- 45, vjust = 0.5)) +
   labs(y="Cumulative soil carbon proportion",
        x="Depth (cm)") +
   guides(color=FALSE)
 
-ggsave(filename='manuscript-figures/02-soil-proportion-fit.png',plot=p1,width=9)
+ggsave(filename='manuscript-figures/02-soil-proportion-fit.png',plot=p1,width=13,height=5)

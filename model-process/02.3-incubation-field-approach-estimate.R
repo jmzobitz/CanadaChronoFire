@@ -3,6 +3,11 @@
 # Load up the processed filtered parameters - see
 # 01.2-incubation-linear-process.R
 
+# Prepare the model expressions
+library(nlsr)
+library(tidyverse)
+library(CanadaChronoFire)  # Load up the package
+
 load('estimate-results/incubation-linear-approach-data.Rda')
 
 ####
@@ -13,8 +18,8 @@ out_list <- vector("list",length=dim(estimate_data_linear)[1])
 
 
 
-#for(i in seq_along(out_list)) {
-for(i in 6040:20175) {
+for(i in seq_along(out_list)) {
+
   print(i)
 
   curr_results <- parameter_estimate(estimate_data_linear$field_params[[i]],estimate_data_linear$field_data[[i]],estimate_data_linear$incubation_field_expressions[[i]])

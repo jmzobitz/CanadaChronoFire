@@ -1,5 +1,9 @@
 # This computes the model estimates for the uncubation field linear approach - in this case we use the results from the incubatino only data
 
+# Prepare the model expressions
+library(nlsr)
+library(tidyverse)
+library(CanadaChronoFire)  # Load up the package
 
 load('estimate-results/incubation-linear-approach-data.Rda')
 
@@ -60,4 +64,3 @@ incubation_field_linear_approach_results <- estimate_data_rev %>%
 # Save results
 save(incubation_field_linear_approach_results,
      file='estimate-results/incubation-field-linear-approach-results.Rda')
-

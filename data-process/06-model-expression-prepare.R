@@ -67,25 +67,25 @@ respiration_expressions <-
                             rh_field_quality_mult_model_expr),
           RA_linear_expression = c(RA ~ gR*CR),  # For field-linear and incubation-field-linear
           RH_incubation_field_linear_expression = c(rh_incubation_field_linear_null_model_expr, # for incubation field linear
-                                         rh_incubation_field_linear_microbe_model_expr,
-                                         rh_incubation_field_linear_quality_model_expr,
-                                         rh_incubation_field_linear_microbe_mult_model_expr,
-                                         rh_incubation_field_linear_quality_mult_model_expr),
+                                                    rh_incubation_field_linear_microbe_model_expr,
+                                                    rh_incubation_field_linear_quality_model_expr,
+                                                    rh_incubation_field_linear_microbe_mult_model_expr,
+                                                    rh_incubation_field_linear_quality_mult_model_expr),
           rSoil_expression = c(field_null_model_expr,  # Works for field and incubation field
                                field_microbe_model_expr,
                                field_quality_model_expr,
                                field_microbe_mult_model_expr,
                                field_quality_mult_model_expr),
           rSoil_incubation_field_linear_expression = c(rs_incubation_field_linear_null_model_expr,
-                                                 rs_incubation_field_linear_microbe_model_expr,
-                                                 rs_incubation_field_linear_quality_model_expr,
-                                                 rs_incubation_field_linear_microbe_mult_model_expr,
-                                                 rs_incubation_field_linear_quality_mult_model_expr),
+                                                       rs_incubation_field_linear_microbe_model_expr,
+                                                       rs_incubation_field_linear_quality_model_expr,
+                                                       rs_incubation_field_linear_microbe_mult_model_expr,
+                                                       rs_incubation_field_linear_quality_mult_model_expr),
           rSoil_field_linear_expression = c(field_linear_null_model_expr,
-                                             field_linear_microbe_model_expr,
-                                             field_linear_quality_model_expr,
-                                             field_linear_microbe_mult_model_expr,
-                                             field_linear_quality_mult_model_expr),
+                                            field_linear_microbe_model_expr,
+                                            field_linear_quality_model_expr,
+                                            field_linear_microbe_mult_model_expr,
+                                            field_linear_quality_mult_model_expr),
   )
 
 
@@ -100,4 +100,3 @@ model_expressions <- tibble( model = c("null","microbe","quality","microbe-mult"
 
 usethis::use_data(model_expressions,overwrite = TRUE)
 usethis::use_data(respiration_expressions,overwrite = TRUE)
-

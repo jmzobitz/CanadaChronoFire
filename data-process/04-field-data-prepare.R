@@ -46,11 +46,12 @@ field_data <- readxl::read_xlsx('data-raw/Modeling data Canada North.xlsx') %>%
     Plot = as.numeric(Plot),
     rSoil = `Soil Respiration, g/CO2/m2/h`* (12 / 44 ) * (24),  # Convert to g C / m2 day
     fW = `Soil moisture`/100,
+    aboveground_biomass = `Total tree biomass, kg m2 (foliage, branches, stems)`*1000,
     CR = `Total tree biomass, kg m2 (foliage, branches, stems)`*1000*0.3, # Convert to gC and the 0.3 is just a guess - Harkonen 2011
     CS_top30 = `Soil C kg m2 in top 30 cm`*1000 )  %>%
   pivot_longer(cols = c("Soil temp 10cm","Soil temp 5cm","Soil temp 2cm"), names_to = "depth", values_to = "tSoil") %>%
   mutate(depth = as.numeric(str_extract(depth,"[[:digit:]]+"))) %>%
-  select(Year,Area,Plot,depth,tSoil,rSoil,fW,CR,CS_top30) %>%
+  select(Year,Area,Plot,depth,tSoil,aboveground_biomass,rSoil,fW,CR,CS_top30) %>%
   group_by(Year) %>%
   mutate(across(.cols=c("tSoil":"CS_top30"),.fns = ~if_else(is.na(.x),mean(.x,na.rm=TRUE),.x))) %>%
   ungroup()  # FOR NOW, we just take the mean if there is an NA

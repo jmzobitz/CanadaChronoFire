@@ -4,7 +4,7 @@
 
 library(nlsr)
 library(tidyverse)
-library(CanadaFire)  # Load up the package
+library(CanadaChronoFire)  # Load up the package
 
 
 
