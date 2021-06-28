@@ -1,5 +1,5 @@
 # Make a plot of the ratio of autotrophic respiration for the different models.  This forms figure 8 in our manuscript
-library(CanadaChronoFire)
+library(FireResp)
 library(tidyverse)
 # Load in the data
 load('estimate-results/stats-results/median-flux-components.Rda')

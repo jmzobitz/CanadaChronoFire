@@ -1,7 +1,7 @@
 # This script analyes the stats for the field data - we save the results for subsequent analysis and figure 4.  We compute the groupings by each separate site and together.
 
 library(tidyverse)
-library(CanadaChronoFire)
+library(FireResp)
 
 
 

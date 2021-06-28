@@ -3,7 +3,7 @@
 # Assumes all antecedent scripts in the data-process folder have been run
 
 library(tidyverse)
-library(CanadaChronoFire)
+library(FireResp)
 
 # Join the expressions to the parameters
 combined_params_expr <- combined_params %>%

@@ -4,8 +4,7 @@
 
 library(nlsr)
 library(tidyverse)
-library(CanadaChronoFire)  # Load up the package
-
+library(FireResp)
 
 
 # Determine the number of iterations

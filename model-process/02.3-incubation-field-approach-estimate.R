@@ -6,7 +6,7 @@
 # Prepare the model expressions
 library(nlsr)
 library(tidyverse)
-library(CanadaChronoFire)  # Load up the package
+library(FireResp)  # Load up the package
 
 load('estimate-results/incubation-linear-approach-data.Rda')
 

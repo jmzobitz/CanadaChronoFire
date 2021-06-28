@@ -1,6 +1,6 @@
 # Make a plot of the different flux respiration components for the different models.  This forms figure 7 in our manuscript
 
-library(CanadaChronoFire)
+library(FireResp)
 # Load in the data
 load('estimate-results/stats-results/median-flux-components.Rda')
 

@@ -1,6 +1,6 @@
 # Load and process the parameters
 
-library(CanadaChronoFire)
+library(FireResp)
 library(tidyverse)
 
 ### Approach 1: Field

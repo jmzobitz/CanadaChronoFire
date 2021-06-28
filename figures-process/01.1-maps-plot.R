@@ -32,7 +32,7 @@ pal <- colorFactor(my_colors, my_sites$site_name,
 
 base_map <- leaflet(options = leafletOptions(
   attributionControl=TRUE)) %>%
-  addTiles() %>%
+  addTiles(attribution = '© OpenStreetMap contributors 2021. Distributed under the Open Data Commons Open Database License (ODbL) v1.0.') %>%
   setView(lng = -136, lat=67,zoom=4) %>%
   addRectangles(
     lng1=-134.3, lat1=68.2,
@@ -54,7 +54,7 @@ base_map
 # zoom 8, lat = -137, long = 66.15
 map1 <- leaflet(options = leafletOptions(
   attributionControl=TRUE)) %>%
-  addTiles() %>%
+  addTiles(attribution = '© OpenStreetMap contributors 2021. Distributed under the Open Data Commons Open Database License (ODbL) v1.0.')
   setView(lng = -136.94, lat=66.15,zoom=9) %>%
   addCircleMarkers(
     data = my_sites,
@@ -83,7 +83,7 @@ map1 <- leaflet(options = leafletOptions(
 # zoom 8 -133.59, 68.025
 map2 <- leaflet(options = leafletOptions(
   attributionControl=TRUE)) %>%
-  addTiles() %>%
+  addTiles(attribution = '© OpenStreetMap contributors 2021. Distributed under the Open Data Commons Open Database License (ODbL) v1.0.')
   setView(lng = -133.59, lat=68.025,zoom=9) %>%
   addCircleMarkers(
     data = my_sites,

@@ -2,7 +2,7 @@
 
 
 library(tidyverse)
-library(CanadaChronoFire)
+library(FireResp)
 
 load('estimate-results/stats-results/taylor-field.Rda')
 

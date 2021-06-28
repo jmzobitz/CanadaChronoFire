@@ -4,7 +4,7 @@
 
 library(nlsr)
 library(tidyverse)
-library(CanadaChronoFire)  # Load up the package
+library(FireResp)  # Load up the package
 
 
 # For this scenario we are only estimating with field data and ignoring the incubation data, so we need to overwrite in the field params the estimate variable with model_estimate (which says are you in the model or not) just so we can estimate data., so if it is in the model we then estimate it

@@ -1,7 +1,7 @@
 # This script creates Figure 3: Taylor diagram of incubation only results
 
 library(tidyverse)
-library(CanadaChronoFire)
+library(FireResp)
 load('estimate-results/stats-results/taylor-incubation.Rda')
 
 taylor_values <- model_fits_all %>%
@@ -16,10 +16,11 @@ taylor_values <- model_fits_all %>%
 t_plot <- taylor_plot(full=FALSE,max_R = 2)
 
 curr_plot <- t_plot +
-  geom_point(data=taylor_values,aes(x=x_coord,y=y_coord,color=model),size=4) +
+  geom_point(data=taylor_values,aes(x=x_coord,y=y_coord,color=model,shape=model,fill=model),size=4,alpha=0.6) +
   facet_grid(.~depth) +
-  labs(y=expression(italic("\u03C3")[model] / italic("\u03C3")[meas]),color="Model:",x="") +
+  labs(y=expression(italic("\u03C3")[model] / italic("\u03C3")[meas]),color="Model:",shape="Model:",x="",fill="Model:") +
   theme_canada() +
+  scale_shape_manual(values=c(21:25)) +
   theme(axis.text = element_text(size=12) )
 
 

@@ -1,7 +1,7 @@
 # This script analyes the stats for the incubation only data - we save the results for subsequent analysis and figure 3. We compute the groupings by each separate site and together.
 
 
-library(CanadaChronoFire)
+library(FireResp)
 library(tidyverse)
 
 # Load up median parameters

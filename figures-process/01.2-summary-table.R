@@ -1,7 +1,7 @@
 # This script creates the code for Table 1 in the manuscript
 library(tidyverse)
 library(gt)
-library(CanadaChronoFire)
+library(FireResp)
 
 # Soil proportions
 load('data-process/data-outputs/incubation-soil-proportion-year.Rda')

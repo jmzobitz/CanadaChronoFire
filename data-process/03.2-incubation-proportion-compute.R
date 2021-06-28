@@ -1,7 +1,7 @@
 # Script to compute proportion of soil carbon up to a given depth
 
 library(tidyverse)
-library(CanadaChronoFire)
+library(FireResp)
 
 # Load up the incubation data
 load('data-process/data-outputs/incubation-soil-data.Rda')

@@ -2,7 +2,7 @@
 
 library(gt)
 library(tidyverse)
-library(CanadaChronoFire)
+library(FireResp)
 
 # Load up median values of all the parameters and approaches
 load('estimate-results/stats-results/median-params-field.Rda')
