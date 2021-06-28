@@ -24,7 +24,7 @@ t_plot <- taylor_plot(max_R = 2)
 curr_plot <- t_plot +
   geom_point(data=taylor_values,aes(x=x_coord,y=y_coord,color=model,shape=approach),size=4) +
   facet_grid(.~depth) +
-  labs(y=expression(italic("\u03C3")[model] / italic("\u03C3")[meas]),color="Model:",shape="Parameter estimation approach:") +
+  labs(y=expression(italic("\u03C3")[model] / italic("\u03C3")[meas]),color="Submodel:",shape="Parameter estimation approach:") +
   theme_canada() +
   theme(legend.position="bottom", legend.box="vertical", legend.margin=margin()) +
   scale_shape_manual(values=15:18)

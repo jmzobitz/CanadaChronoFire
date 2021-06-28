@@ -41,7 +41,7 @@ results_flux <- median_flux_components %>%
   geom_line(color='grey',aes(x=Year,value,group=depth_mod)) +
   geom_point(aes(color=model,shape=depth,x=Year,y=value,group=depth_mod),size=2) + facet_grid(flux~approach,labeller = my_labeller) +
   theme_canada() +
-  labs(y=bquote(~Flux~'('~g~C~m^-2~d^-1*~')'),shape = "Soil depth:",color="Model:") +
+  labs(y=bquote(~Flux~'('~g~C~m^-2~d^-1*~')'),shape = "Soil depth:",color="Submodel:") +
   theme(axis.text.x=element_text(angle = 45, vjust = 0.5)) +
   coord_cartesian(ylim=c(0, 5))
 

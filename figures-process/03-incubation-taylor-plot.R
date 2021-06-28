@@ -18,7 +18,7 @@ t_plot <- taylor_plot(full=FALSE,max_R = 2)
 curr_plot <- t_plot +
   geom_point(data=taylor_values,aes(x=x_coord,y=y_coord,color=model,shape=model,fill=model),size=4,alpha=0.6) +
   facet_grid(.~depth) +
-  labs(y=expression(italic("\u03C3")[model] / italic("\u03C3")[meas]),color="Model:",shape="Model:",x="",fill="Model:") +
+  labs(y=expression(italic("\u03C3")[model] / italic("\u03C3")[meas]),color="Submodel:",shape="Submodel:",x="",fill="Submodel:") +
   theme_canada() +
   scale_shape_manual(values=c(21:25)) +
   theme(axis.text = element_text(size=12) )

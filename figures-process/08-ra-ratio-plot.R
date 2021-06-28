@@ -23,7 +23,7 @@ results_pa <- median_flux_components %>%
   geom_point(aes(color=model,shape=depth,x=Year,y=rA_prop,group=depth_mod),size=2) + facet_grid(.~approach,labeller = my_labeller2) +
   theme_canada() +
   theme(panel.grid.major.y =  element_line(colour = "grey50",linetype = 'dashed')) +
-  labs(y=expression(R[A] / (R[A] + R[H]) ),shape = "Soil depth:",color="Model:") +
+  labs(y=expression(R[A] / (R[A] + R[H]) ),shape = "Soil depth:",color="Submodel:") +
   theme(axis.text.x=element_text(angle = 45, vjust = 0.5)) + ylim(c(0,1))
 
 
