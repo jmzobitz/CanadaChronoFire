@@ -26,7 +26,8 @@ curr_plot <- t_plot +
   facet_grid(.~depth) +
   labs(y=expression(italic("\u03C3")[model] / italic("\u03C3")[meas]),color="Submodel:",shape="Parameter estimation approach:") +
   theme_canada() +
-  theme(legend.position="bottom", legend.box="vertical", legend.margin=margin()) +
+  theme(legend.position="bottom", legend.box="vertical", legend.margin=margin(),
+        axis.text = element_text(size=18)) +
   scale_shape_manual(values=15:18)
 
 

@@ -76,7 +76,7 @@ r2_plot <- function(in_data) {
 
 
 # Allow us to change the plot breaks
-aic_plot <- function(in_data,break_vals=c(50,100,150),y_limits=c(20, 180)) {
+aic_plot <- function(in_data,break_vals=c(50,100,150,200,250),y_limits=c(20, 280)) {
 
   my_data <- in_data  %>%
     mutate(model=factor(model,levels=c("null","microbe", "quality", "microbe-mult","quality-mult"))) %>%

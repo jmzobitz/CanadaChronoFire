@@ -21,7 +21,7 @@ curr_plot <- t_plot +
   labs(y=expression(italic("\u03C3")[model] / italic("\u03C3")[meas]),color="Submodel:",shape="Submodel:",x="",fill="Submodel:") +
   theme_canada() +
   scale_shape_manual(values=c(21:25)) +
-  theme(axis.text = element_text(size=12) )
+  theme(axis.text = element_text(size=18) )
 
 
 ggsave(curr_plot,filename = 'manuscript-figures/03-incubation-taylor.png',width = 22,height=10,units="cm")
